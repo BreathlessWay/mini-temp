@@ -1,0 +1,39 @@
+{
+  "name": "<%= ProjectName %>",
+  "version": "1.0.0",
+  "private": true,
+  "description": "<%= Description %>",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "cross-env NODE_ENV=development gulp",
+    "build": "cross-env NODE_ENV=production gulp"
+  },
+  "author": "<%= Author %>",
+  "husky": {
+    "hooks": {
+        "pre-commit": "pretty-quick --staged",
+        "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "dependencies": {
+    "miniprogram-api-promise": "^1.0.4"
+  },
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "prettier": "^2.1.2",
+    "pretty-quick": "^3.0.2",
+    "@commitlint/cli": "^11.0.0",
+    "@commitlint/config-conventional": "^11.0.0",
+    "cross-env": "^7.0.2",
+    "del": "^5.1.0",
+    "husky": "^4.3.0",<% if (CSS === 'Sass/Scss') {%>
+    "gulp-sass": "^4.1.0",
+    "node-sass": "^4.14.1",<%}%><% if (CSS === 'Less') {%>
+    "gulp-less": "^4.0.1",<%}%>
+    "gulp-rename": "^2.0.0"<% if (Language === 'Typescript') {%>,
+    "typescript": "^3.7.0",
+    "gulp-typescript": "^6.0.0-alpha.1",
+    "miniprogram-api-typings": "^3.1.0"<%}%>
+  }
+}
