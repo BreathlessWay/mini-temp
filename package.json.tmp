@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "description": "<%= Description %>",
-  "main": "app.js",
+  "main": "app.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "cross-env NODE_ENV=development gulp",
