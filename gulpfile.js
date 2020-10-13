@@ -25,6 +25,7 @@ const fileInputPath = {
   less: "src/**/*.less",
   sass: "src/**/*.+(scss|sass)",
   config: "src/**/*.json",
+  images:"src/images/**/*"
 };
 
 const minifyCss = cleanCSS({
@@ -100,7 +101,8 @@ const generatorEnvConfig = () => {
         target: 'es5',
         module: "commonjs",
       })
-    )
+    ).
+      pipe(rename('env.js'))
     .pipe(dest(outputEnvConfigPath));
 };
 
