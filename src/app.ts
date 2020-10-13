@@ -2,7 +2,7 @@
 import "./helpers/runtime.js"
 import "./helpers/index.js"
 
-import {A, a} from './utils/a'
+import {A, a} from '@/utils/a'
 
 App<IAppOption>({
   onLaunch() {

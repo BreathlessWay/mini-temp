@@ -3,6 +3,12 @@
     "@babel/preset-env"
   ],
   "plugins": [
-    "@babel/plugin-external-helpers"
+    "@babel/plugin-external-helpers",
+    ["module-resolver", {
+      "alias": {
+        "@": ""
+      },
+      "loglevel": "silent"
+    }]
   ]
 }

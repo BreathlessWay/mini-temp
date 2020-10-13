@@ -38,7 +38,7 @@ const helperPath = "helpers/index.js",
   runtimePath = "helpers/runtime.js";
 
 shelljs.exec(
-  `babel-external-helpers -t var -l ${helpersWhiteList} > src/${helperPath}`
+  `babel-external-helpers -t global -l ${helpersWhiteList} > src/${helperPath}`
 );
 
 shelljs.cp(
