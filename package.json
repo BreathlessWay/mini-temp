@@ -5,9 +5,10 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "cross-env NODE_ENV=development gulp",
-    "build": "cross-env NODE_ENV=production gulp",
-    "helpers": "node ci/generator.js"
+    "dev": "cross-env NODE_ENV=development node ci/build.js",
+    "build": "cross-env NODE_ENV=production node ci/build.js",
+    "helpers": "node ci/generator.js",
+    "build:npm": "node ci/buildNpm.js cross-env privateKeyPath=''"
   },
   "repository": {
     "type": "git",
@@ -40,6 +41,7 @@
     "gulp-typescript": "^6.0.0-alpha.1",
     "husky": "^4.3.0",
     "miniprogram-api-typings": "^3.1.2",
+    "miniprogram-ci": "^1.0.83",
     "node-sass": "^4.14.1",
     "prettier": "^2.1.2",
     "pretty-quick": "^3.0.2",
@@ -49,6 +51,7 @@
   },
   "dependencies": {
     "dayjs": "^1.9.3",
-    "lodash": "^4.17.20"
+    "lodash": "^4.17.20",
+    "miniprogram-api-promise": "^1.0.4"
   }
 }

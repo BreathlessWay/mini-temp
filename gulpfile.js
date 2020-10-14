@@ -1,13 +1,12 @@
 const { src, dest, watch, series } = require("gulp"),
   babel = require("gulp-babel"),
   cleanCSS = require("gulp-clean-css"),
-  del = require("del"),
   ts = require("gulp-typescript"),
   rename = require("gulp-rename"),
   sass = require("gulp-sass"),
   less = require("gulp-less");
 
-const outputPath = "dist";
+const outputPath = process.env.output;
 
 const isDEV = process.env.NODE_ENV === "development",
   isPROD = process.env.NODE_ENV === "production";
@@ -33,10 +32,6 @@ const minifyCss = cleanCSS({
 });
 
 const tsProject = ts.createProject("tsconfig.json");
-
-const clean = () => {
-  return del([outputPath]);
-};
 
 const parseTs = () => {
   return src(fileInputPath.ts)
@@ -121,7 +116,7 @@ const watchFile = () => {
   watch(fileInputPath.config, copyJson);
 };
 
-let build = series(
+const build = series(
   parseTs,
   parseJs,
   copyHelpers,
@@ -136,10 +131,6 @@ let build = series(
 
 if (isDEV) {
   exports.watch = watchFile();
-}
-
-if (isPROD) {
-  build = series(clean, build);
 }
 
 exports.default = build;

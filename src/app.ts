@@ -2,10 +2,13 @@
 import "./helpers/runtime.js"
 import "./helpers/index.js"
 
+import dayjs from "dayjs";
+
 App<IAppOption>({
   onLaunch() {
     // wxp.navigateBack().then(res=>console.log(res)).catch(err=>console.log(err))
     // 展示本地存储能力
+    console.log(dayjs().format('YYYY-MM-DD'));
     const logs = wx.getStorageSync("logs") || [];
     logs.unshift(Date.now());
     wx.setStorageSync("logs", logs);
