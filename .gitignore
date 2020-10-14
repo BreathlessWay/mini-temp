@@ -121,3 +121,4 @@ package.json
 gulpfile.js
 .DS_Store
 package-lock.json
+.idea
