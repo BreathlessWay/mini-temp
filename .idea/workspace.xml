@@ -20,8 +20,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7cb7c357-4e47-441e-8c35-96c0cce66318" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/mini-temp.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/mini-temp.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gulpfile.js" beforeDir="false" afterPath="$PROJECT_DIR$/gulpfile.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project.config.json" beforeDir="false" afterPath="$PROJECT_DIR$/project.config.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,14 +55,15 @@
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\zhujian\Desktop\mini-temp\src" />
+      <recent name="C:\Users\zhujian\Desktop\mini-temp" />
+      <recent name="C:\Users\zhujian\Desktop\mini-temp\src\helpers" />
+      <recent name="C:\Users\zhujian\Desktop\mini-temp\src\utils" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\zhujian\Desktop\mini-temp\src\config" />
       <recent name="C:\Users\zhujian\Desktop\mini-temp" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\zhujian\Desktop\mini-temp\src" />
-      <recent name="C:\Users\zhujian\Desktop\mini-temp\src\helpers" />
-      <recent name="C:\Users\zhujian\Desktop\mini-temp\src\utils" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -70,7 +74,9 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1602298192233</updated>
-      <workItem from="1602298193306" duration="35342000" />
+      <workItem from="1602298193306" duration="35432000" />
+      <workItem from="1602640353317" duration="720000" />
+      <workItem from="1602641087079" duration="98000" />
     </task>
     <servers />
   </component>
@@ -97,24 +103,25 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
     <state x="407" y="207" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1602558284414">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="407" y="207" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1536.824/0.-1080.1920.1040@0.0.1536.824" timestamp="1602558284414" />
-    <state x="93" y="93" width="1350" height="638" key="DiffContextDialog" timestamp="1602492490715">
+    <state x="93" y="93" width="1350" height="638" key="DiffContextDialog" timestamp="1602574763293">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="93" y="93" width="1350" height="638" key="DiffContextDialog/0.0.1536.824/0.-1080.1920.1040@0.0.1536.824" timestamp="1602492490715" />
+    <state x="93" y="93" width="1350" height="638" key="DiffContextDialog/0.0.1536.824/0.-1080.1920.1040@0.0.1536.824" timestamp="1602574763293" />
     <state x="542" y="167" key="FileChooserDialogImpl" timestamp="1602480946276">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="542" y="167" key="FileChooserDialogImpl/0.0.1536.824/0.-1080.1920.1040@0.0.1536.824" timestamp="1602480946276" />
-    <state x="546" y="31" key="RollbackChangesDialog" timestamp="1602490360610">
+    <state x="546" y="31" key="RollbackChangesDialog" timestamp="1602574765062">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="546" y="31" key="RollbackChangesDialog/0.0.1536.824/0.-1080.1920.1040@0.0.1536.824" timestamp="1602490360610" />
+    <state x="546" y="31" key="RollbackChangesDialog/0.0.1536.824/0.-1080.1920.1040@0.0.1536.824" timestamp="1602574765062" />
     <state x="461" y="156" width="614" height="512" key="find.popup" timestamp="1602493382655">
       <screen x="0" y="0" width="1536" height="824" />
     </state>

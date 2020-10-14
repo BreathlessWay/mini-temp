@@ -7,7 +7,7 @@ const { src, dest, parallel, watch, series } = require("gulp"),
   sass = require("gulp-sass"),
   less = require("gulp-less");
 
-const outputPath = "dist";
+const outputPath = "miniprogramRoot ";
 
 const isDEV = process.env.NODE_ENV === "development",
   isPROD = process.env.NODE_ENV === "production";
@@ -42,7 +42,7 @@ const parseTs = () => {
   return src(fileInputPath.ts)
     .pipe(tsProject())
     .pipe(babel())
-    .pipe(dest("dist"));
+    .pipe(dest(outputPath));
 };
 
 const parseJs = () => {
