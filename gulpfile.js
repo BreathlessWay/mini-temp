@@ -7,7 +7,7 @@ const { src, dest, parallel, watch, series } = require("gulp"),
   sass = require("gulp-sass"),
   less = require("gulp-less");
 
-const outputPath = "miniprogramRoot ";
+const outputPath = "dist";
 
 const isDEV = process.env.NODE_ENV === "development",
   isPROD = process.env.NODE_ENV === "production";
@@ -121,7 +121,7 @@ const watchFile = () => {
   watch(fileInputPath.config, copyJson);
 };
 
-let build = parallel(
+let build = series(
   parseTs,
   parseJs,
   copyHelpers,
