@@ -2,16 +2,15 @@
 import "./helpers/runtime.js"
 import "./helpers/index.js"
 
-import {A, a} from '@/utils/a'
-
 App<IAppOption>({
   onLaunch() {
-    const m = new A()
-    a()
+    // wxp.navigateBack().then(res=>console.log(res)).catch(err=>console.log(err))
     // 展示本地存储能力
     const logs = wx.getStorageSync("logs") || [];
     logs.unshift(Date.now());
     wx.setStorageSync("logs", logs);
+
+    wx.setStorage({key:'log', data: logs}).then(res=>console.log(res)).catch(err=>console.log(err))
 
     // 登录
     wx.login({

@@ -34,8 +34,12 @@ const helpersWhiteList = [
   "toConsumableArray",
 ];
 
-const helperPath = "helpers/index.js",
-  runtimePath = "helpers/runtime.js";
+const helpRootPath = "helpers";
+
+const helperPath = `${helpRootPath}/index.js`,
+  runtimePath = `${helpRootPath}/runtime.js`;
+
+shelljs.mkdir(`src/${helpRootPath}`);
 
 shelljs.exec(
   `babel-external-helpers -t global -l ${helpersWhiteList} > src/${helperPath}`

@@ -119,7 +119,6 @@ dist
 
 package.json
 gulpfile.js
-package-lock.json
 .idea
 .DS_Store
-mi
+package-lock.json

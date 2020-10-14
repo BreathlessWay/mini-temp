@@ -3,7 +3,7 @@
     "@babel/preset-env"
   ],
   "plugins": [
-    "@babel/plugin-external-helpers",
+    "@breathlessway/babel-plugin-external-helpers-mini",
     ["module-resolver", {
       "alias": {
         "@": ""

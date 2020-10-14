@@ -22,10 +22,11 @@
   "homepage": "https://github.com/BreathlessWay/mini-temp#readme",
   "devDependencies": {
     "@babel/core": "^7.11.6",
-    "@babel/plugin-external-helpers": "^7.10.4",
     "@babel/preset-env": "^7.11.5",
+    "@breathlessway/babel-plugin-external-helpers-mini": "^1.0.0",
     "@commitlint/cli": "^11.0.0",
     "@commitlint/config-conventional": "^11.0.0",
+    "@types/lodash": "^4.14.162",
     "babel-cli": "^6.26.0",
     "babel-plugin-module-resolver": "^4.0.0",
     "cross-env": "^7.0.2",
@@ -47,6 +48,7 @@
     "typescript": "^4.0.3"
   },
   "dependencies": {
-    "miniprogram-api-promise": "^1.0.4"
+    "dayjs": "^1.9.3",
+    "lodash": "^4.17.20"
   }
 }

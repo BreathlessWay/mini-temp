@@ -1,4 +1,4 @@
-const { src, dest, parallel, watch, series } = require("gulp"),
+const { src, dest, watch, series } = require("gulp"),
   babel = require("gulp-babel"),
   cleanCSS = require("gulp-clean-css"),
   del = require("del"),
@@ -25,7 +25,7 @@ const fileInputPath = {
   less: "src/**/*.less",
   sass: "src/**/*.+(scss|sass)",
   config: "src/**/*.json",
-  images:"src/images/**/*"
+  images: "src/images/**/*",
 };
 
 const minifyCss = cleanCSS({
