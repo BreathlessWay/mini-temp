@@ -1,6 +1,6 @@
-const ci = require("miniprogram-ci"),
-  projectConfig = require("../project.config.json");
+import ci from "miniprogram-ci";
 
+const projectConfig = require("../project.config.json");
 const privateKeyPath = process.env.privateKeyPath;
 
 if (privateKeyPath) {

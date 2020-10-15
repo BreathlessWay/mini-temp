@@ -1,5 +1,5 @@
-const shelljs = require("shelljs"),
-  fs = require("fs");
+import shelljs from "shelljs";
+import fs from "fs";
 
 const helpersWhiteList = [
   "typeof",
@@ -42,7 +42,12 @@ const helperPath = `${helpRootPath}/index.js`,
 shelljs.mkdir(`src/${helpRootPath}`);
 
 shelljs.exec(
-  `babel-external-helpers -t global -l ${helpersWhiteList} > src/${helperPath}`
+  `babel-external-helpers -t global -l ${helpersWhiteList} > src/${helperPath}`,
+  (code, stdout, stderr) => {
+    console.log("babel-external-helpers Exit code:", code);
+    console.log("babel-external-helpers stdout:", stdout);
+    console.log("babel-external-helpers stderr:", stderr);
+  }
 );
 
 shelljs.cp(
@@ -51,9 +56,10 @@ shelljs.cp(
   `src/${runtimePath}`
 );
 
-const warningTip = "// 在最顶层引入 不可删除\n";
+const warningTip = "// 在最顶层引入 不可删除";
 
-const helpImport = `import "./${runtimePath}"
+const helpImport = `
+import "./${runtimePath}"
 import "./${helperPath}"
 `;
 
@@ -63,8 +69,7 @@ fs.readFile("src/app.ts", (err, data) => {
   }
 
   const text = data.toString();
-
-  if (text.includes(helpImport)) {
+  if (text.trim().includes(helpImport.trim())) {
     return;
   }
 
@@ -73,7 +78,7 @@ fs.readFile("src/app.ts", (err, data) => {
     warningTip + helpImport + "\n" + data.toString(),
     (err1) => {
       if (err1) {
-        return err;
+        return err1;
       }
     }
   );

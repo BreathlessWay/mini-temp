@@ -2,13 +2,13 @@
   "name": "mini-temp",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "dist/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "cross-env NODE_ENV=development node ci/build.js",
-    "build": "cross-env NODE_ENV=production node ci/build.js",
-    "helpers": "node ci/generator.js",
-    "build:npm": "node ci/buildNpm.js cross-env privateKeyPath=''"
+    "dev": "cross-env NODE_ENV=development ts-node ci/build.ts",
+    "build": "cross-env NODE_ENV=production ts-node ci/build.ts",
+    "helpers": "ts-node ci/generator.ts",
+    "build:npm": "ts-node ci/buildNpm.ts cross-env privateKeyPath=''"
   },
   "repository": {
     "type": "git",
@@ -23,11 +23,14 @@
   "homepage": "https://github.com/BreathlessWay/mini-temp#readme",
   "devDependencies": {
     "@babel/core": "^7.11.6",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.12.0",
+    "@babel/plugin-proposal-optional-chaining": "^7.12.0",
     "@babel/preset-env": "^7.11.5",
     "@breathlessway/babel-plugin-external-helpers-mini": "^1.0.0",
     "@commitlint/cli": "^11.0.0",
     "@commitlint/config-conventional": "^11.0.0",
     "@types/lodash": "^4.14.162",
+    "@types/shelljs": "^0.8.8",
     "babel-cli": "^6.26.0",
     "babel-plugin-module-resolver": "^4.0.0",
     "cross-env": "^7.0.2",
@@ -47,6 +50,7 @@
     "pretty-quick": "^3.0.2",
     "regenerator": "^0.14.7",
     "shelljs": "^0.8.4",
+    "ts-node": "^9.0.0",
     "typescript": "^4.0.3"
   },
   "dependencies": {

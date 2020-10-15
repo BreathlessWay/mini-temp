@@ -8,6 +8,10 @@ App<IAppOption>({
   onLaunch() {
     // wxp.navigateBack().then(res=>console.log(res)).catch(err=>console.log(err))
     // 展示本地存储能力
+    const a = {b:{c:1}}
+
+    console.log(a?.b?.c??0)
+
     console.log(dayjs().format('YYYY-MM-DD'));
     const logs = wx.getStorageSync("logs") || [];
     logs.unshift(Date.now());

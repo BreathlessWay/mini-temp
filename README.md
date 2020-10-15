@@ -10,4 +10,4 @@
 
 - 对于在项目构建完成后运行所依赖的npm模块需要安装在`dependencies`，
 然后在开发工具中`工具->构建npm`，并且在项目的本地配置中需要开启`使用npm模块`
-- 如果你已经有私钥可以在`npm run build:npm`命令中配置私钥地址`node ci/buildNpm.js cross-env privateKeyPath=<path>'`，启动项目会自动构建npm
+- 如果你已经有私钥可以在`npm run build:npm`命令中配置私钥地址`node ci/buildNpm.ts cross-env privateKeyPath=<path>'`，启动项目会自动构建npm
