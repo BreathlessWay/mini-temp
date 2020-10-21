@@ -1,32 +1,16 @@
-import ci from "miniprogram-ci";
+import shelljs from "shelljs";
+import path from "path";
 
-const projectConfig = require("../project.config.json");
-const privateKeyPath = process.env.privateKeyPath;
+import config from "./config";
 
-if (privateKeyPath) {
-  (async () => {
-    const project = new ci.Project({
-      appid: projectConfig.appid,
-      type: "miniProgram",
-      projectPath: "../",
-      privateKeyPath,
-      ignores: ["node_modules/**/*"],
-    });
-    // 在有需要的时候构建npm
-    const warning = await ci.packNpm(project, {
-      reporter: (infos) => {
-        console.log(infos);
-      },
-    });
-    console.warn(warning);
-    // 可对warning进行格式化
-    /*
-              warning.map((it, index) => {
-                      return `${index + 1}. ${it.msg}
-              \t> code: ${it.code}
-              \t@ ${it.jsPath}:${it.startLine}-${it.endLine}`
-                    }).join('---------------\n')
-            */
-    // 完成构建npm之后，可用ci.preview或者ci.upload
-  })();
+if (config.cliPath) {
+  const pwd = path.resolve();
+
+  const cmd = `${config.cliPath} build-npm --project ${pwd}`;
+
+  shelljs.exec(cmd, (code, stdout, stderr) => {
+    console.log("buildNpm Exit code:", code);
+    console.log("buildNpm stdout:", stdout);
+    console.log("buildNpm stderr:", stderr);
+  });
 }
