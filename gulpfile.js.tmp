@@ -91,13 +91,8 @@ const copyJson = () => {
 
 const generatorEnvConfig = () => {
   return src(inputEnvConfigPath)
-    .pipe(
-      ts({
-        target: 'es5',
-        module: "commonjs",
-      })
-    ).
-      pipe(rename('env.js'))
+    .pipe(ts.createProject("tsconfig.json")())
+    .pipe(rename("env.js"))
     .pipe(dest(outputEnvConfigPath));
 };
 
