@@ -6,8 +6,8 @@
   "miniprogramRoot": "dist/",
   "setting": {
     "urlCheck": true,
-    "es6": true,
-    "enhance": false,
+    "es6": false,
+    "enhance": true,
     "postcss": true,
     "preloadBackgroundData": false,
     "minified": true,
@@ -21,7 +21,7 @@
     "checkInvalidKey": true,
     "checkSiteMap": true,
     "uploadWithSourceMap": true,
-    "compileHotReLoad": false,
+    "compileHotReLoad": true,
     "useMultiFrameRuntime": false,
     "useApiHook": true,
     "babelSetting": {
@@ -30,7 +30,7 @@
       "outputPath": ""
     },
     "useIsolateContext": true,
-    "useCompilerModule": true,
+    "useCompilerModule": false,
     "userConfirmedUseCompilerModuleSwitch": true,
     "packNpmManually": true,
     "packNpmRelationList": [
@@ -38,7 +38,8 @@
         "packageJsonPath": "./package.json",
         "miniprogramNpmDistDir": "./dist/"
       }
-    ]
+    ],
+    "bundle": true
   },
   "compileType": "miniprogram",
   "libVersion": "2.13.1",

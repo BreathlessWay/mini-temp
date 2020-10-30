@@ -14,11 +14,7 @@ if (isPROD) {
 
 shelljs.mkdir(mkdirPath);
 
-shelljs.exec("npm run build:npm", (code, stdout, stderr) => {
-  console.log("npm run build:npm Exit code:", code);
-  console.log("npm run build:npm stdout:", stdout);
-  console.log("npm run build:npm stderr:", stderr);
-});
+shelljs.exec("npm run build:npm");
 
 shelljs.exec(
   `cross-env NODE_ENV=${NODE_ENV} && cross-env output=${config.outputPath} gulp`,
