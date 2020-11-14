@@ -1,6 +1,7 @@
 在入口文件最顶层引入`runtime.js`和`helpers.js`
 
 例：
+
 ```
 // src/app.js
 
