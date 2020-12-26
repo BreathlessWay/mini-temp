@@ -23,3 +23,9 @@
   eg: C:"\Program Files (x86)\Tencent\微信web开发者工具\"cli.bat
   ```
 - 在ci/config.ts文件中添加命令行工具路径cliPath
+
+> TODO
+
+1. 完成模版
+2. 配置husky+prettier+eslint
+3. 添加commitizen

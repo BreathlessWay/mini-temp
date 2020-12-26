@@ -1,25 +1,17 @@
 {
-  "name": "mini-temp",
+  "name": "",
   "version": "1.0.0",
   "description": "",
   "main": "dist/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "cross-env NODE_ENV=development ts-node ci/build.ts",
-    "build": "cross-env NODE_ENV=production ts-node ci/build.ts",
-    "build:npm": "ts-node ci/buildNpm.ts"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/BreathlessWay/mini-temp.git"
+    "dev": "cross-env NODE_ENV=development ts-node ci/build.js",
+    "build": "cross-env NODE_ENV=production ts-node ci/build.js",
+    "build:npm": "ts-node ci/buildNpm.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/BreathlessWay/mini-temp/issues"
-  },
-  "homepage": "https://github.com/BreathlessWay/mini-temp#readme",
   "devDependencies": {
     "@babel/core": "^7.11.6",
     "@babel/plugin-proposal-nullish-coalescing-operator": "^7.12.0",
@@ -50,7 +42,6 @@
   },
   "dependencies": {
     "dayjs": "^1.9.3",
-    "lodash": "^4.17.20",
-    "miniprogram-api-promise": "^1.0.4"
+    "lodash": "^4.17.20"
   }
 }
