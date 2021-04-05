@@ -8,9 +8,8 @@
     "@babel/plugin-proposal-nullish-coalescing-operator",
     ["module-resolver", {
       "alias": {
-        "@": ""
-      },
-      "loglevel": "silent"
+        "utils": "./src/utils"
+      }
     }]
   ]
 }

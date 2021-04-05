@@ -1,7 +1,6 @@
-import shelljs from "shelljs";
-import path from "path";
-
-import config from "./config";
+const shelljs = require("shelljs"),
+  path = require("path"),
+  config = require("./config")
 
 const NODE_ENV = process.env.NODE_ENV,
   isPROD = process.env.NODE_ENV === "production";

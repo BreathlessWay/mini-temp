@@ -1,7 +1,6 @@
-import shelljs from "shelljs";
-import path from "path";
-
-import config from "./config";
+const shelljs = require("shelljs"),
+  path = require("path"),
+  config = require("./config")
 
 if (config.cliPath) {
   const pwd = path.resolve();
