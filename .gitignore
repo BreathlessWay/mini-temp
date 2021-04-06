@@ -129,5 +129,6 @@ gulpfile.js
 src
 types
 
-!jsTemp
-!tsTemp
+!jsTemp/src
+!tsTemp/src
+!tsTemp/types
