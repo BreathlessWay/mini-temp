@@ -117,8 +117,15 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-package.json
-gulpfile.js
+# ide config
 .DS_Store
 package-lock.json
 .idea
+
+# default template
+package.json
+gulpfile.js
+.babelrc
+src
+types
+

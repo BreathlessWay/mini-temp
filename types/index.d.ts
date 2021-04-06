@@ -4,3 +4,9 @@ interface IAppOption {
     };
     userInfoReadyCallback?: WechatMiniprogram.GetUserInfoSuccessCallback;
 }
+
+declare module 'config/env' {
+    export default {
+        url: string
+    }
+}

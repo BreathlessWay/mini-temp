@@ -1,3 +1,3 @@
 export default {
-    url: 'www.'
+    url: ''
 }

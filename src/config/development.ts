@@ -1,3 +1,3 @@
 export default {
-    u: 'aaa'
+    url: ''
 }
