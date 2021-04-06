@@ -1,7 +1,7 @@
 {
-  "name": "<%= projectConfig.ProjectName %>",
+  "name": "<%= ProjectName %>",
   "version": "1.0.0",
-  "description": "<%= projectConfig.Description %>",
+  "description": "<%= Description %>",
   "main": "dist/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -10,7 +10,7 @@
     "build:npm": "node ci/buildNpm.js"
   },
   "keywords": [],
-  "author": "<%= projectConfig.Author %>",
+  "author": "<%= Author %>",
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.11.6",
