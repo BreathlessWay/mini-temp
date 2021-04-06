@@ -128,7 +128,9 @@ gulpfile.js
 .babelrc
 src
 types
+tsconfig.json
 
 !jsTemp/src
 !tsTemp/src
 !tsTemp/types
+!tsTemp/tsconfig.json
