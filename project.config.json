@@ -22,16 +22,18 @@
     "checkSiteMap": true,
     "uploadWithSourceMap": true,
     "compileHotReLoad": true,
-    "useMultiFrameRuntime": false,
+    "useMultiFrameRuntime": true,
     "useApiHook": true,
     "babelSetting": {
       "ignore": [],
       "disablePlugins": [],
       "outputPath": ""
     },
+    "bundle": false,
     "useIsolateContext": true,
     "useCompilerModule": false,
     "userConfirmedUseCompilerModuleSwitch": true,
+    "userConfirmedBundleSwitch": false,
     "packNpmManually": true,
     "packNpmRelationList": [
       {
@@ -39,7 +41,8 @@
         "miniprogramNpmDistDir": "./dist/"
       }
     ],
-    "bundle": true
+    "minifyWXSS": true,
+    "useApiHostProcess": true
   },
   "compileType": "miniprogram",
   "libVersion": "2.13.1",
