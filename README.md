@@ -35,4 +35,9 @@
 5. 添加 less sass 忽略 css import 处理
 6. 尝试 [gulp-purgecss](https://purgecss.com/plugins/gulp.html#installation)
 7. 使用 gulp-html-minify 压缩 wxml
-8. [参考优化](https://segmentfault.com/a/1190000019346399)
+8. 参考优化
+
+- https://segmentfault.com/a/1190000019346399
+- https://juejin.cn/post/6937944767548358693
+- https://juejin.cn/post/6844903885413285895
+- https://juejin.cn/post/6844904100849680398#heading-3
