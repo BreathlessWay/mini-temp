@@ -13,7 +13,7 @@ const outputPath = process.env.output;
 const isDEV = process.env.NODE_ENV === "development",
   isPROD = process.env.NODE_ENV === "production";
 
-const inputEnvConfigPath = `src/config/${process.env.NODE_ENV}.<% if (Language == 'Typescript') { %>ts<% } %><% else { %>js<% } %>`,
+const inputEnvConfigPath = `src/config/${process.env.NODE_ENV}.<% if (Language == 'Typescript') { %>ts<% } %><% if (Language == 'Javascript') { %>js<% } %>`,
   outputEnvConfigPath = `${outputPath}/config`;
 
 const fileInputPath = {
