@@ -1,48 +1,48 @@
 const { src, dest, watch, series } = require("gulp"),
   babel = require("gulp-babel"),
-  cleanCSS = require("gulp-clean-css"),
-  ts = require("gulp-typescript"),
-  rename = require("gulp-rename"),
-  sass = require("gulp-sass"),
-  less = require("gulp-less");
+  rename = require("gulp-rename");
+
+<% if (CSS == 'Wxss' || CSS == 'Css') { %>
+const cleanCSS = require("gulp-clean-css");<% } %><% if (Language == 'Typescript') { %>
+const ts = require("gulp-typescript");<% } %><% if (CSS == 'Sass/Scss') { %>
+const sass = require("gulp-sass");<% } %><% if (CSS == 'Less') { %>
+const less = require("gulp-less");<% } %>
 
 const outputPath = process.env.output;
 
 const isDEV = process.env.NODE_ENV === "development",
   isPROD = process.env.NODE_ENV === "production";
 
-const inputEnvConfigPath = `src/config/${process.env.NODE_ENV}.ts`,
+const inputEnvConfigPath = `src/config/${process.env.NODE_ENV}.<% if (Language == 'Typescript') { %>ts<% } %><% else { %>js<% } %>`,
   outputEnvConfigPath = `${outputPath}/config`;
 
 const fileInputPath = {
-  ts: ["src/**/*.ts", "!src/config/*.ts"],
-  js: ["src/**/*.js", "!src/helpers/*.js"],
   helpers: "src/helpers/*.js",
   wxml: "src/**/*.wxml",
-  wxss: "src/**/*.wxss",
-  css: "src/**/*.css",
-  less: "src/**/*.less",
-  sass: "src/**/*.+(scss|sass)",
   config: "src/**/*.json",
-  images: "src/images/**/*",
+  images: "src/images/**/*",<% if (Language == 'Typescript') { %>
+  ts: ["src/**/*.ts", "!src/config/*.ts"],<% } %><% if (Language == 'Javascript') { %>
+  js: ["src/**/*.js", "!src/helpers/*.js", "!src/config/*.js"],<% } %><% if (CSS == 'Wxss') { %>
+  wxss: "src/**/*.wxss",<% } %><% if (CSS == 'Css') { %>
+  css: "src/**/*.css",<% } %><% if (CSS == 'Less') { %>
+  less: "src/**/*.less",<% } %><% if (CSS == 'Sass/Scss') { %>
+  sass: "src/**/*.+(scss|sass)",<% } %>
 };
-
+<% if (CSS == 'Wxss' || CSS == 'Css') { %>
 const minifyCss = cleanCSS({
   format: isDEV ? "beautify" : "keep-breaks",
-});
-
-const tsProject = ts.createProject("tsconfig.json");
+});<% } %><% if (Language == 'Typescript') { %>
 
 const parseTs = () => {
   return src(fileInputPath.ts)
-    .pipe(tsProject())
+    .pipe(ts.createProject("tsconfig.json"))
     .pipe(babel())
     .pipe(dest(outputPath));
-};
+};<% } %><% if (Language == 'Javascript') { %>
 
 const parseJs = () => {
   return src(fileInputPath.js).pipe(babel()).pipe(dest(outputPath));
-};
+};<% } %>
 
 const copyHelpers = () => {
   return src(fileInputPath.helpers).pipe(dest(`${outputPath}/helpers`));
@@ -51,18 +51,18 @@ const copyHelpers = () => {
 const copyWxml = () => {
   return src(fileInputPath.wxml).pipe(dest(outputPath));
 };
-
+<% if (CSS == 'Wxss') { %>
 const copyWxss = () => {
   return src(fileInputPath.wxss).pipe(minifyCss).pipe(dest(outputPath));
-};
-
+};<% } %>
+<% if (CSS == 'Css') { %>
 const parseCss = () => {
   return src(fileInputPath.css)
     .pipe(minifyCss)
     .pipe(rename({ extname: ".wxss" }))
     .pipe(dest(outputPath));
-};
-
+};<% } %>
+<% if (CSS == 'Sass/Scss') { %>
 const parseSass = () => {
   return src(fileInputPath.sass)
     .pipe(
@@ -72,8 +72,8 @@ const parseSass = () => {
     )
     .pipe(rename({ extname: ".wxss" }))
     .pipe(dest(outputPath));
-};
-
+};<% } %>
+<% if (CSS == 'Less') { %>
 const parseLess = () => {
   return src(fileInputPath.less)
     .pipe(
@@ -83,45 +83,46 @@ const parseLess = () => {
     )
     .pipe(rename({ extname: ".wxss" }))
     .pipe(dest(outputPath));
-};
+};<% } %>
 
 const copyJson = () => {
   return src(fileInputPath.config).pipe(dest(outputPath));
 };
 
 const generatorEnvConfig = () => {
-  return src(inputEnvConfigPath)
-    .pipe(ts.createProject("tsconfig.json")())
+  return src(inputEnvConfigPath)<% if (Language == 'Typescript') { %>
+    .pipe(ts.createProject("tsconfig.json")())<% } %>
+    .pipe(babel())
     .pipe(rename("env.js"))
     .pipe(dest(outputEnvConfigPath));
 };
 
-const watchFile = () => {
-  watch(fileInputPath.ts, parseTs);
-  watch(fileInputPath.js, parseJs);
+const watchFile = () => {<% if (Language == 'Typescript') { %>
+  watch(fileInputPath.ts, parseTs);<% } %><% if (Language == 'Javascript') { %>
+  watch(fileInputPath.js, parseJs);<% } %>
 
   watch(fileInputPath.helpers, copyHelpers);
   watch(fileInputPath.wxml, copyWxml);
-
-  watch(fileInputPath.wxss, copyWxss);
-  watch(fileInputPath.css, parseCss);
-  watch(fileInputPath.sass, parseSass);
-  watch(fileInputPath.less, parseLess);
-
   watch(fileInputPath.config, copyJson);
+  <% if (CSS == 'Wxss') { %>
+  watch(fileInputPath.wxss, copyWxss);<% } %><% if (CSS == 'Css') { %>
+  watch(fileInputPath.css, parseCss);<% } %><% if (CSS == 'Sass/Scss') { %>
+  watch(fileInputPath.sass, parseSass);<% } %><% if (CSS == 'Less') { %>
+  watch(fileInputPath.less, parseLess);<% } %>
+
 };
 
-const build = series(
-  parseTs,
-  parseJs,
+const build = series(<% if (Language == 'Typescript') { %>
+  parseTs,<% } %><% if (Language == 'Javascript') { %>
+  parseJs,<% } %>
   copyHelpers,
   copyWxml,
-  copyWxss,
-  parseCss,
-  parseSass,
-  parseLess,
   copyJson,
-  generatorEnvConfig
+  generatorEnvConfig,<% if (CSS == 'Wxss') { %>
+  copyWxss,<% } %><% if (CSS == 'Css') { %>
+  parseCss,<% } %><% if (CSS == 'Sass/Scss') { %>
+  parseSass,<% } %><% if (CSS == 'Less') { %>
+  parseLess,<% } %>
 );
 
 if (isDEV) {

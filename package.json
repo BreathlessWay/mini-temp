@@ -13,7 +13,9 @@
     "type": "git",
     "url": "git+https://github.com/BreathlessWay/mini-temp.git"
   },
-  "keywords": [],
+  "keywords": [
+    "miniprogram"
+  ],
   "author": "",
   "license": "ISC",
   "bugs": {

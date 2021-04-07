@@ -1,43 +1,44 @@
 const { src, dest, watch, series } = require("gulp"),
-  babel = require("gulp-babel"),
-  cleanCSS = require("gulp-clean-css"),
-  ts = require("gulp-typescript"),
-  rename = require("gulp-rename"),
-  sass = require("gulp-sass"),
-  less = require("gulp-less");
+    babel = require("gulp-babel"),
+    rename = require("gulp-rename");
+
+const cleanCSS = require("gulp-clean-css");
+const ts = require("gulp-typescript");
+const sass = require("gulp-sass");
+const less = require("gulp-less");
 
 const outputPath = process.env.output;
 
 const isDEV = process.env.NODE_ENV === "development",
   isPROD = process.env.NODE_ENV === "production";
 
-const inputEnvConfigPath = `src/config/${process.env.NODE_ENV}.ts`,
+const inputEnvConfigPath = `src/config/${process.env.NODE_ENV}`,
   outputEnvConfigPath = `${outputPath}/config`;
 
 const fileInputPath = {
-  ts: ["src/**/*.ts", "!src/config/*.ts"],
-  js: ["src/**/*.js", "!src/helpers/*.js"],
   helpers: "src/helpers/*.js",
   wxml: "src/**/*.wxml",
+  config: "src/**/*.json",
+  images: "src/images/**/*",
+
+  ts: ["src/**/*.ts", "!src/config/*.ts"],
+  js: ["src/**/*.js", "!src/helpers/*.js", "!src/config/*.js"],
+
   wxss: "src/**/*.wxss",
   css: "src/**/*.css",
   less: "src/**/*.less",
   sass: "src/**/*.+(scss|sass)",
-  config: "src/**/*.json",
-  images: "src/images/**/*",
 };
 
 const minifyCss = cleanCSS({
   format: isDEV ? "beautify" : "keep-breaks",
 });
 
-const tsProject = ts.createProject("tsconfig.json");
-
 const parseTs = () => {
   return src(fileInputPath.ts)
-    .pipe(tsProject())
-    .pipe(babel())
-    .pipe(dest(outputPath));
+      .pipe(ts.createProject("tsconfig.json"))
+      .pipe(babel())
+      .pipe(dest(outputPath));
 };
 
 const parseJs = () => {
