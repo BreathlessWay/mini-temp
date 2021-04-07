@@ -1,7 +1,6 @@
 const { src, dest, watch, series } = require("gulp"),
   babel = require("gulp-babel"),
   rename = require("gulp-rename");
-
 <% if (CSS == 'Wxss' || CSS == 'Css') { %>
 const cleanCSS = require("gulp-clean-css");<% } %><% if (Language == 'Typescript') { %>
 const ts = require("gulp-typescript");<% } %><% if (CSS == 'Sass/Scss') { %>
@@ -39,7 +38,6 @@ const parseTs = () => {
     .pipe(babel())
     .pipe(dest(outputPath));
 };<% } %><% if (Language == 'Javascript') { %>
-
 const parseJs = () => {
   return src(fileInputPath.js).pipe(babel()).pipe(dest(outputPath));
 };<% } %>
@@ -54,15 +52,13 @@ const copyWxml = () => {
 <% if (CSS == 'Wxss') { %>
 const copyWxss = () => {
   return src(fileInputPath.wxss).pipe(minifyCss).pipe(dest(outputPath));
-};<% } %>
-<% if (CSS == 'Css') { %>
+};<% } %><% if (CSS == 'Css') { %>
 const parseCss = () => {
   return src(fileInputPath.css)
     .pipe(minifyCss)
     .pipe(rename({ extname: ".wxss" }))
     .pipe(dest(outputPath));
-};<% } %>
-<% if (CSS == 'Sass/Scss') { %>
+};<% } %><% if (CSS == 'Sass/Scss') { %>
 const parseSass = () => {
   return src(fileInputPath.sass)
     .pipe(
@@ -72,8 +68,7 @@ const parseSass = () => {
     )
     .pipe(rename({ extname: ".wxss" }))
     .pipe(dest(outputPath));
-};<% } %>
-<% if (CSS == 'Less') { %>
+};<% } %><% if (CSS == 'Less') { %>
 const parseLess = () => {
   return src(fileInputPath.less)
     .pipe(
@@ -109,7 +104,6 @@ const watchFile = () => {<% if (Language == 'Typescript') { %>
   watch(fileInputPath.css, parseCss);<% } %><% if (CSS == 'Sass/Scss') { %>
   watch(fileInputPath.sass, parseSass);<% } %><% if (CSS == 'Less') { %>
   watch(fileInputPath.less, parseLess);<% } %>
-
 };
 
 const build = series(<% if (Language == 'Typescript') { %>
