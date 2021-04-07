@@ -36,7 +36,7 @@ const minifyCss = cleanCSS({
 
 const parseTs = () => {
   return src(fileInputPath.ts)
-      .pipe(ts.createProject("tsconfig.json"))
+      .pipe(ts.createProject("tsconfig.json")())
       .pipe(babel())
       .pipe(dest(outputPath));
 };
