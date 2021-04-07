@@ -52,5 +52,11 @@
   "dependencies": {
     "dayjs": "^1.9.3",
     "lodash": "^4.17.20"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
   }
 }
