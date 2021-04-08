@@ -23,8 +23,8 @@
     "babel-plugin-module-resolver": "^4.0.0",
     "cross-env": "^7.0.2",
     "gulp": "^4.0.2",
-    "gulp-babel": "^8.0.0",
-    "gulp-clean-css": "^4.3.0",
+    "gulp-babel": "^8.0.0",<% if (CSS == 'Wxss'||CSS == 'Css') { %>
+    "gulp-clean-css": "^4.3.0",<% } %>
     "gulp-rename": "^2.0.0",<% if (CSS == 'Less') { %>
     "gulp-less": "^4.0.1",<% } %><% if (CSS == 'Sass/Scss') { %>
     "gulp-sass": "^4.1.0",
