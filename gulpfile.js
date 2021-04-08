@@ -1,6 +1,7 @@
 const { src, dest, watch, series } = require("gulp"),
-    babel = require("gulp-babel"),
-    rename = require("gulp-rename");
+  babel = require("gulp-babel"),
+  rename = require("gulp-rename"),
+  minifyHtml = require("gulp-html-minify");
 
 const cleanCSS = require("gulp-clean-css");
 const ts = require("gulp-typescript");
@@ -12,7 +13,7 @@ const outputPath = process.env.output;
 const isDEV = process.env.NODE_ENV === "development",
   isPROD = process.env.NODE_ENV === "production";
 
-const inputEnvConfigPath = `src/config/${process.env.NODE_ENV}`,
+const inputEnvConfigPath = `src/config/${process.env.NODE_ENV}.ts`,
   outputEnvConfigPath = `${outputPath}/config`;
 
 const fileInputPath = {
@@ -20,6 +21,7 @@ const fileInputPath = {
   wxml: "src/**/*.wxml",
   config: "src/**/*.json",
   images: "src/images/**/*",
+  fonts: "src/fonts/**/*",
 
   ts: ["src/**/*.ts", "!src/config/*.ts"],
   js: ["src/**/*.js", "!src/helpers/*.js", "!src/config/*.js"],
@@ -36,9 +38,9 @@ const minifyCss = cleanCSS({
 
 const parseTs = () => {
   return src(fileInputPath.ts)
-      .pipe(ts.createProject("tsconfig.json")())
-      .pipe(babel())
-      .pipe(dest(outputPath));
+    .pipe(ts.createProject("tsconfig.json")())
+    .pipe(babel())
+    .pipe(dest(outputPath));
 };
 
 const parseJs = () => {
@@ -49,8 +51,16 @@ const copyHelpers = () => {
   return src(fileInputPath.helpers).pipe(dest(`${outputPath}/helpers`));
 };
 
-const copyWxml = () => {
-  return src(fileInputPath.wxml).pipe(dest(outputPath));
+const copyImages = () => {
+  return src(fileInputPath.images).pipe(dest(outputPath));
+};
+
+const copyFonts = () => {
+  return src(fileInputPath.fonts).pipe(dest(outputPath));
+};
+
+const parseWxml = () => {
+  return src(fileInputPath.wxml).pipe(minifyHtml()).pipe(dest(outputPath));
 };
 
 const copyWxss = () => {
@@ -93,6 +103,7 @@ const copyJson = () => {
 const generatorEnvConfig = () => {
   return src(inputEnvConfigPath)
     .pipe(ts.createProject("tsconfig.json")())
+    .pipe(babel())
     .pipe(rename("env.js"))
     .pipe(dest(outputEnvConfigPath));
 };
@@ -102,7 +113,9 @@ const watchFile = () => {
   watch(fileInputPath.js, parseJs);
 
   watch(fileInputPath.helpers, copyHelpers);
-  watch(fileInputPath.wxml, copyWxml);
+  watch(fileInputPath.wxml, parseWxml);
+  watch(fileInputPath.images, copyImages);
+  watch(fileInputPath.fonts, copyFonts);
 
   watch(fileInputPath.wxss, copyWxss);
   watch(fileInputPath.css, parseCss);
@@ -113,15 +126,17 @@ const watchFile = () => {
 };
 
 const build = series(
-  parseTs,
+  // parseTs,
   parseJs,
   copyHelpers,
-  copyWxml,
+  parseWxml,
   copyWxss,
-  parseCss,
-  parseSass,
-  parseLess,
+  // parseCss,
+  // parseSass,
+  // parseLess,
   copyJson,
+  copyImages,
+  copyFonts,
   generatorEnvConfig
 );
 

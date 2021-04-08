@@ -1,3 +1,7 @@
+import get from 'lodash'
+
+
+console.log(get);
 export const formatTime = (date: Date) => {
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
@@ -17,3 +21,14 @@ const formatNumber = (n: number) => {
   const s = n.toString();
   return s[1] ? s : "0" + s;
 };
+
+
+
+function testable(target:any) {
+  target.isTestable = true;
+}
+
+@testable
+class a {
+
+}

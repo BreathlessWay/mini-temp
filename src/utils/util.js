@@ -1,3 +1,6 @@
+import _ from 'lodash'
+
+console.log(_);
 const formatTime = (date) => {
   const year = date.getFullYear();
   const month = date.getMonth() + 1;

@@ -1,6 +1,7 @@
 const { src, dest, watch, series } = require("gulp"),
   babel = require("gulp-babel"),
-  rename = require("gulp-rename");
+  rename = require("gulp-rename"),
+  minifyHtml = require("gulp-html-minify");
 <% if (CSS == 'Wxss' || CSS == 'Css') { %>
 const cleanCSS = require("gulp-clean-css");<% } %><% if (Language == 'Typescript') { %>
 const ts = require("gulp-typescript");<% } %><% if (CSS == 'Sass/Scss') { %>
@@ -46,8 +47,16 @@ const copyHelpers = () => {
   return src(fileInputPath.helpers).pipe(dest(`${outputPath}/helpers`));
 };
 
-const copyWxml = () => {
-  return src(fileInputPath.wxml).pipe(dest(outputPath));
+const copyImages = () => {
+  return src(fileInputPath.images).pipe(dest(outputPath));
+};
+
+const copyFonts = () => {
+  return src(fileInputPath.fonts).pipe(dest(outputPath));
+};
+
+const parseWxml = () => {
+  return src(fileInputPath.wxml).pipe(minifyHtml()).pipe(dest(outputPath));
 };
 <% if (CSS == 'Wxss') { %>
 const copyWxss = () => {
@@ -97,8 +106,10 @@ const watchFile = () => {<% if (Language == 'Typescript') { %>
   watch(fileInputPath.js, parseJs);<% } %>
 
   watch(fileInputPath.helpers, copyHelpers);
-  watch(fileInputPath.wxml, copyWxml);
+  watch(fileInputPath.wxml, parseWxml);
   watch(fileInputPath.config, copyJson);
+  watch(fileInputPath.images, copyImages);
+  watch(fileInputPath.fonts, copyFonts);
   <% if (CSS == 'Wxss') { %>
   watch(fileInputPath.wxss, copyWxss);<% } %><% if (CSS == 'Css') { %>
   watch(fileInputPath.css, parseCss);<% } %><% if (CSS == 'Sass/Scss') { %>
@@ -110,8 +121,10 @@ const build = series(<% if (Language == 'Typescript') { %>
   parseTs,<% } %><% if (Language == 'Javascript') { %>
   parseJs,<% } %>
   copyHelpers,
-  copyWxml,
+  parseWxml,
   copyJson,
+  copyImages,
+  copyFonts,
   generatorEnvConfig,<% if (CSS == 'Wxss') { %>
   copyWxss,<% } %><% if (CSS == 'Css') { %>
   parseCss,<% } %><% if (CSS == 'Sass/Scss') { %>

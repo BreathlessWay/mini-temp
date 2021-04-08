@@ -1,4 +1,11 @@
 <!--index.wxml-->
+<wxs module="tool">
+  var includeIt = function(arr, item) {
+    if (!arr) return false;
+    return arr.indexOf(item) > -1;
+  };
+  module.exports.includeIt = includeIt;
+</wxs>
 <view class="container">
   <view class="userinfo">
     <block wx:if="{{canIUseOpenData}}" calss="userinfo-opendata">
