@@ -1,0 +1,23 @@
+{
+  "Typescript": [
+    "types/*",
+    "tsconfig.json",
+    "src/app.ts",
+    "src/utils/util.ts",
+    "src/pages/index/index.ts",
+    "src/config/development.ts",
+    "src/config/production.ts",
+    "src/config/env.ts"
+  ],
+  "Javascript": [
+    "src/app.js",
+    "src/utils/util.js",
+    "src/pages/index/index.js",
+    "src/config/development.js",
+    "src/config/production.js"
+  ],
+  "Less": ["src/pages/index/index.less", "src/app.less"],
+  "Sass/Scss": ["src/pages/index/index.scss", "src/app.scss"],
+  "Css": ["src/pages/index/index.css", "src/app.css"],
+  "Wxss": ["src/pages/index/index.wxss", "src/app.wxss"]
+}
