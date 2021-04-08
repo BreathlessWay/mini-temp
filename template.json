@@ -1,6 +1,6 @@
 {
   "Typescript": [
-    "types/*",
+    "types",
     "tsconfig.json",
     "src/app.ts",
     "src/utils/util.ts",
