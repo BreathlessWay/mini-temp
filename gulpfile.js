@@ -1,3 +1,6 @@
+const path = require("path"),
+  fs = require("fs");
+
 const { src, dest, watch, series } = require("gulp"),
   babel = require("gulp-babel"),
   rename = require("gulp-rename"),
@@ -7,7 +10,7 @@ const cleanCSS = require("gulp-clean-css");
 const sass = require("gulp-sass");
 const less = require("gulp-less");
 
-const outputPath = process.env.output;
+let outputPath = process.env.output;
 
 const isDEV = process.env.NODE_ENV === "development",
   isPROD = process.env.NODE_ENV === "production";
@@ -104,6 +107,44 @@ const generatorEnvConfig = () => {
 };
 
 const watchFile = () => {
+  console.log(`正在监听文件...`);
+  const watcher = watch("src/**/**");
+
+  watcher.on("change", function (filePath, stats) {
+    console.log("文件修改", filePath);
+  });
+
+  watcher.on("add", function (filePath, stats) {
+    console.log("文件添加", filePath);
+  });
+
+  watcher.on("unlink", function (filePath, stats) {
+    console.log("文件删除", filePath);
+    let _outputPath = outputPath;
+    if (_outputPath.endsWith("/")) {
+      _outputPath = _outputPath.substr(0, _outputPath.length - 1);
+    }
+    let distFile = filePath.replace(/^src\b/, _outputPath);
+
+    if (distFile.endsWith(".ts")) {
+      distFile = distFile.replace(/\.ts$/, ".js");
+    }
+    if (distFile.endsWith(".scss") || distFile.endsWith(".sass")) {
+      distFile = distFile.replace(/(\.scss|\.sass)$/, ".wxss");
+    }
+    if (distFile.endsWith(".less")) {
+      distFile = distFile.replace(/\.less$/, ".wxss");
+    }
+    if (distFile.endsWith(".css")) {
+      distFile = distFile.replace(/\.css$/, ".wxss");
+    }
+
+    distFile = path.join(process.cwd(), distFile);
+    if (fs.existsSync(distFile)) {
+      fs.unlinkSync(distFile);
+    }
+  });
+
   watch(fileInputPath.ts, parseTs);
   watch(fileInputPath.js, parseJs);
 
@@ -122,13 +163,13 @@ const watchFile = () => {
 
 const build = series(
   parseTs,
-  parseJs,
+  // parseJs,
   copyHelpers,
   parseWxml,
   copyWxss,
-  parseCss,
-  parseSass,
-  parseLess,
+  // parseCss,
+  // parseSass,
+  // parseLess,
   copyJson,
   copyImages,
   copyFonts,

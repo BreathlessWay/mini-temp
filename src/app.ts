@@ -11,6 +11,7 @@ App<IAppOption>({
   globalData: {},
   onLaunch() {
     const a = { b: { c: 1 } };
+
     console.log(new A());
     console.log(a?.b?.c ?? 0);
 
