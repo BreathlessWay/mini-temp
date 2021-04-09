@@ -4,12 +4,14 @@ import "./helpers/helpers.js";
 
 import dayjs from "dayjs";
 
+import A from "utils/util";
+
 // app.ts
 App<IAppOption>({
   globalData: {},
   onLaunch() {
     const a = { b: { c: 1 } };
-
+    console.log(new A());
     console.log(a?.b?.c ?? 0);
 
     console.log(dayjs().format("YYYY-MM-DD"));

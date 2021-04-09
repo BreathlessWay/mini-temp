@@ -31,7 +31,7 @@
 1. 完成模版，添加 css 模板
 2. ~~配置 husky+prettier~~
 3. ~~添加 commitizen~~
-4. 添加图片，字体 gulp 处理
+4. ~~添加图片，字体 gulp 处理~~
 5. 添加 less sass 忽略 css import 处理
 6. 尝试 [gulp-purgecss](https://purgecss.com/plugins/gulp.html#installation)
 7. 使用 gulp-html-minify 压缩 wxml

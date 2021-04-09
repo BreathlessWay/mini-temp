@@ -4,7 +4,6 @@ const { src, dest, watch, series } = require("gulp"),
   minifyHtml = require("gulp-html-minify");
 
 const cleanCSS = require("gulp-clean-css");
-const ts = require("gulp-typescript");
 const sass = require("gulp-sass");
 const less = require("gulp-less");
 
@@ -37,10 +36,7 @@ const minifyCss = cleanCSS({
 });
 
 const parseTs = () => {
-  return src(fileInputPath.ts)
-    .pipe(ts.createProject("tsconfig.json")())
-    .pipe(babel())
-    .pipe(dest(outputPath));
+  return src(fileInputPath.ts).pipe(babel()).pipe(dest(outputPath));
 };
 
 const parseJs = () => {
@@ -102,7 +98,6 @@ const copyJson = () => {
 
 const generatorEnvConfig = () => {
   return src(inputEnvConfigPath)
-    .pipe(ts.createProject("tsconfig.json")())
     .pipe(babel())
     .pipe(rename("env.js"))
     .pipe(dest(outputEnvConfigPath));
@@ -126,14 +121,14 @@ const watchFile = () => {
 };
 
 const build = series(
-  // parseTs,
+  parseTs,
   parseJs,
   copyHelpers,
   parseWxml,
   copyWxss,
-  // parseCss,
-  // parseSass,
-  // parseLess,
+  parseCss,
+  parseSass,
+  parseLess,
   copyJson,
   copyImages,
   copyFonts,

@@ -1,6 +1,3 @@
-import _ from 'lodash'
-
-console.log(_);
 const formatTime = (date) => {
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
@@ -23,6 +20,14 @@ const formatNumber = (n) => {
   return n[1] ? n : `0${n}`;
 };
 
+function testable(target) {
+  target.isTestable = true;
+}
+
+@testable
+class A {}
+
 module.exports = {
   formatTime,
+  A,
 };

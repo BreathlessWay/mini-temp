@@ -3,8 +3,7 @@ const { src, dest, watch, series } = require("gulp"),
   rename = require("gulp-rename"),
   minifyHtml = require("gulp-html-minify");
 <% if (CSS == 'Wxss' || CSS == 'Css') { %>
-const cleanCSS = require("gulp-clean-css");<% } %><% if (Language == 'Typescript') { %>
-const ts = require("gulp-typescript");<% } %><% if (CSS == 'Sass/Scss') { %>
+const cleanCSS = require("gulp-clean-css");<% } %><% if (CSS == 'Sass/Scss') { %>
 const sass = require("gulp-sass");<% } %><% if (CSS == 'Less') { %>
 const less = require("gulp-less");<% } %>
 
@@ -20,7 +19,8 @@ const fileInputPath = {
   helpers: "src/helpers/*.js",
   wxml: "src/**/*.wxml",
   config: "src/**/*.json",
-  images: "src/images/**/*",<% if (Language == 'Typescript') { %>
+  images: "src/images/**/*",
+  fonts: "src/fonts/**/*",<% if (Language == 'Typescript') { %>
   ts: ["src/**/*.ts", "!src/config/*.ts"],<% } %><% if (Language == 'Javascript') { %>
   js: ["src/**/*.js", "!src/helpers/*.js", "!src/config/*.js"],<% } %><% if (CSS == 'Wxss') { %>
   wxss: "src/**/*.wxss",<% } %><% if (CSS == 'Css') { %>
@@ -34,10 +34,7 @@ const minifyCss = cleanCSS({
 });<% } %><% if (Language == 'Typescript') { %>
 
 const parseTs = () => {
-  return src(fileInputPath.ts)
-    .pipe(ts.createProject("tsconfig.json")())
-    .pipe(babel())
-    .pipe(dest(outputPath));
+  return src(fileInputPath.ts).pipe(babel()).pipe(dest(outputPath));
 };<% } %><% if (Language == 'Javascript') { %>
 const parseJs = () => {
   return src(fileInputPath.js).pipe(babel()).pipe(dest(outputPath));
@@ -94,8 +91,7 @@ const copyJson = () => {
 };
 
 const generatorEnvConfig = () => {
-  return src(inputEnvConfigPath)<% if (Language == 'Typescript') { %>
-    .pipe(ts.createProject("tsconfig.json")())<% } %>
+  return src(inputEnvConfigPath)
     .pipe(babel())
     .pipe(rename("env.js"))
     .pipe(dest(outputEnvConfigPath));
