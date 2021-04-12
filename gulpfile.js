@@ -1,14 +1,22 @@
 const path = require("path"),
   fs = require("fs");
 
-const { src, dest, watch, series } = require("gulp"),
+const { src, dest, watch, parallel, lastRun } = require("gulp"),
   babel = require("gulp-babel"),
   rename = require("gulp-rename"),
-  minifyHtml = require("gulp-html-minify");
+  sourcemaps = require("gulp-sourcemaps"),
+  gulpIf = require("gulp-if"),
+  pump = require("pump"),
+  gulpImage = require("gulp-image"),
+  cache = require("gulp-cache"),
+  prettyData = require("gulp-pretty-data");
 
 const cleanCSS = require("gulp-clean-css");
 const sass = require("gulp-sass");
 const less = require("gulp-less");
+
+const since = (task) => (file) =>
+  lastRun(task) > file.stat.ctime ? lastRun(task) : 0;
 
 let outputPath = process.env.output;
 
@@ -38,43 +46,70 @@ const minifyCss = cleanCSS({
   format: isDEV ? "beautify" : "keep-breaks",
 });
 
-const parseTs = () => {
-  return src(fileInputPath.ts).pipe(babel()).pipe(dest(outputPath));
+const parseTs = (cb) => {
+  const tsResult = src(fileInputPath.ts, { since: since(parseTs) })
+    .pipe(gulpIf(isDEV, sourcemaps.init()))
+    .pipe(babel())
+    .on("error", () => {
+      // 捕获错误，不添加会因为编译错误导致任务中断
+      /** 忽略编译器错误**/
+    });
+  pump([tsResult, gulpIf(isDEV, sourcemaps.write(".")), dest(outputPath)], cb);
 };
 
-const parseJs = () => {
-  return src(fileInputPath.js).pipe(babel()).pipe(dest(outputPath));
+const parseJs = (cb) => {
+  const jsResult = src(fileInputPath.js, { since: since(parseJs) })
+    .pipe(gulpIf(isDEV, sourcemaps.init()))
+    .pipe(babel());
+  pump([jsResult, gulpIf(isDEV, sourcemaps.write(".")), dest(outputPath)], cb);
 };
 
 const copyHelpers = () => {
-  return src(fileInputPath.helpers).pipe(dest(`${outputPath}/helpers`));
+  return src(fileInputPath.helpers, { since: since(copyHelpers) }).pipe(
+    dest(`${outputPath}/helpers`)
+  );
 };
 
 const copyImages = () => {
-  return src(fileInputPath.images).pipe(dest(outputPath));
+  return src(fileInputPath.images, { since: since(copyImages) })
+    .pipe(cache(gulpImage()))
+    .pipe(dest(outputPath));
 };
 
 const copyFonts = () => {
-  return src(fileInputPath.fonts).pipe(dest(outputPath));
+  return src(fileInputPath.fonts, { since: since(copyFonts) }).pipe(
+    dest(outputPath)
+  );
 };
 
-const parseWxml = () => {
-  return src(fileInputPath.wxml).pipe(minifyHtml()).pipe(dest(outputPath));
+const copyWxml = () => {
+  return src(fileInputPath.wxml, { since: since(copyWxml) })
+    .pipe(
+      prettyData({
+        type: isDEV ? "prettify" : "minify",
+        extensions: {
+          wxml: "xml",
+        },
+      })
+    )
+    .pipe(dest(outputPath));
 };
 
 const copyWxss = () => {
-  return src(fileInputPath.wxss).pipe(minifyCss).pipe(dest(outputPath));
+  return src(fileInputPath.wxss, { since: since(copyWxss) })
+    .pipe(minifyCss)
+    .pipe(dest(outputPath));
 };
 
 const parseCss = () => {
-  return src(fileInputPath.css)
+  return src(fileInputPath.css, { since: since(parseCss) })
     .pipe(minifyCss)
     .pipe(rename({ extname: ".wxss" }))
     .pipe(dest(outputPath));
 };
 
 const parseSass = () => {
-  return src(fileInputPath.sass)
+  return src(fileInputPath.sass, { since: since(parseSass) })
     .pipe(
       sass({
         outputStyle: isDEV ? "expanded" : "compressed",
@@ -84,23 +119,37 @@ const parseSass = () => {
     .pipe(dest(outputPath));
 };
 
-const parseLess = () => {
-  return src(fileInputPath.less)
-    .pipe(
+const parseLess = (cb) => {
+  pump(
+    [
+      src(fileInputPath.less, { since: since(parseLess) }),
+      gulpIf(isDEV, sourcemaps.init()),
       less({
         compress: isPROD,
-      })
-    )
-    .pipe(rename({ extname: ".wxss" }))
-    .pipe(dest(outputPath));
+      }),
+      gulpIf(isDEV, sourcemaps.write(".")),
+      rename({ extname: ".wxss" }),
+      dest(outputPath),
+    ],
+    cb
+  );
 };
 
 const copyJson = () => {
-  return src(fileInputPath.config).pipe(dest(outputPath));
+  return src(fileInputPath.config, { since: since(copyJson) })
+    .pipe(
+      prettyData({
+        type: isDEV ? "prettify" : "minify",
+        extensions: {
+          json: "json",
+        },
+      })
+    )
+    .pipe(dest(outputPath));
 };
 
 const generatorEnvConfig = () => {
-  return src(inputEnvConfigPath)
+  return src(inputEnvConfigPath, { since: since(generatorEnvConfig) })
     .pipe(babel())
     .pipe(rename("env.js"))
     .pipe(dest(outputEnvConfigPath));
@@ -149,7 +198,7 @@ const watchFile = () => {
   watch(fileInputPath.js, parseJs);
 
   watch(fileInputPath.helpers, copyHelpers);
-  watch(fileInputPath.wxml, parseWxml);
+  watch(fileInputPath.wxml, copyWxml);
   watch(fileInputPath.images, copyImages);
   watch(fileInputPath.fonts, copyFonts);
 
@@ -161,11 +210,11 @@ const watchFile = () => {
   watch(fileInputPath.config, copyJson);
 };
 
-const build = series(
-  parseTs,
-  // parseJs,
+const build = parallel(
+  // parseTs,
+  parseJs,
   copyHelpers,
-  parseWxml,
+  copyWxml,
   copyWxss,
   // parseCss,
   // parseSass,

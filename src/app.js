@@ -10,7 +10,7 @@ App({
   onLaunch() {
     const a = { b: { c: 1 } };
     console.log(new A());
-    console.log(a?.b?.c ?? 0);
+    console.log(a?.b?.c ?? 6);
 
     console.log(dayjs().format("YYYY-MM-DD"));
     // 展示本地存储能力

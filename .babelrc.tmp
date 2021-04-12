@@ -1,5 +1,12 @@
 {
-  "presets": ["@babel/preset-env"],
+  "presets": [
+      [
+        "@babel/preset-env",
+        {
+          "modules": "cjs"
+        }
+      ]
+  ],
   "plugins": [
     "@breathlessway/babel-plugin-external-helpers-mini",
     "@babel/plugin-proposal-optional-chaining",
