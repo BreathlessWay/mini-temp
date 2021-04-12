@@ -9,7 +9,8 @@ const { src, dest, watch, parallel, lastRun } = require("gulp"),
   pump = require("pump"),
   gulpImage = require("gulp-image"),
   cache = require("gulp-cache"),
-  prettyData = require("gulp-pretty-data");
+  prettyData = require("gulp-pretty-data"),
+  tap = require("gulp-tap");
 
 const cleanCSS = require("gulp-clean-css");
 const sass = require("gulp-sass");
@@ -27,6 +28,8 @@ const isDEV = process.env.NODE_ENV === "development",
 
 const inputEnvConfigPath = `src/config/${process.env.NODE_ENV}.ts`,
   outputEnvConfigPath = `${outputPath}/config`;
+
+const cssFilterFiles = [];
 
 const fileInputPath = {
   helpers: "src/helpers/*.js",
@@ -131,8 +134,34 @@ const parseLess = (cb) => {
     [
       src(fileInputPath.less, { since: since(parseLess) }),
       gulpIf(isDEV, sourcemaps.init()),
+      tap((file) => {
+        const content = file.contents.toString(); // 将文件内容toString()
+        const regNotes = /\/\*(\s|.)*?\*\//g; // 匹配 /* */ 注释
+        const removeComment = content.replace(regNotes, ""); // 删除注释内容
+        const reg = /@import\s+['|"](.+)['|"];/g; // 匹配 @import ** 路径引入
+
+        const str = removeComment.replace(reg, ($1, $2) => {
+          const hasFilter = cssFilterFiles.filter(
+            (item) => $2.indexOf(item) > -1
+          ); // 过滤掉变量文件引入
+          let path = hasFilter <= 0 ? `/** less: ${$1} **/` : $1; // 将纯样式文件的引入 添加注释 /** less: ${$1} **/
+          return path;
+        });
+        file.contents = Buffer.from(str, "utf8"); // string恢复成文件流
+      }),
       less({
         compress: isPROD,
+      }),
+      tap((file) => {
+        const content = file.contents.toString();
+        const regNotes = /\/\*\* less: @import\s+['|"](.+)['|"]; \*\*\//g;
+        const reg = /@import\s+['|"](.+)['|"];/g;
+        const str = content.replace(regNotes, ($1, $2) => {
+          let less = "";
+          $1.replace(reg, ($3) => (less = $3));
+          return less.replace(/\.less/g, ".wxss");
+        });
+        file.contents = Buffer.from(str, "utf8");
       }),
       rename({ extname: ".wxss" }),
       gulpIf(isDEV, sourcemaps.write(".")),
@@ -228,8 +257,8 @@ const build = parallel(
   copyWxml,
   // copyWxss,
   // parseCss,
-  parseSass,
-  // parseLess,
+  // parseSass,
+  parseLess,
   copyJson,
   copyImages,
   copyFonts,
