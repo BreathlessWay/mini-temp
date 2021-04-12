@@ -36,7 +36,8 @@
 6. 尝试 [gulp-purgecss](https://purgecss.com/plugins/gulp.html#installation)
 7. ~~使用 gulp-pretty-data 压缩 wxml 和 json~~
 8. 添加 wxs 处理操作
-9. 参考优化
+9. project.config.json 内置
+10. 参考优化
 
 - ~~https://segmentfault.com/a/1190000019346399~~
 - https://juejin.cn/post/6937944767548358693
