@@ -12,7 +12,8 @@ const { src, dest, watch, parallel, lastRun } = require("gulp"),
   prettyData = require("gulp-pretty-data");
 <% if (CSS == 'Wxss' || CSS == 'Css') { %>
 const cleanCSS = require("gulp-clean-css");<% } %><% if (CSS == 'Sass/Scss') { %>
-const sass = require("gulp-sass");<% } %><% if (CSS == 'Less') { %>
+const sass = require("gulp-sass");
+sass.compiler = require("node-sass");<% } %><% if (CSS == 'Less') { %>
 const less = require("gulp-less");<% } %>
 const since = (task) => (file) =>
   lastRun(task) > file.stat.ctime ? lastRun(task) : 0;
@@ -102,15 +103,20 @@ const parseCss = () => {
     .pipe(rename({ extname: ".wxss" }))
     .pipe(dest(outputPath));
 };<% } %><% if (CSS == 'Sass/Scss') { %>
-const parseSass = () => {
-  return src(fileInputPath.sass, { since: since(parseSass) })
-    .pipe(
+const parseSass = (cb) => {
+  pump(
+    [
+      src(fileInputPath.sass, { since: since(parseSass) }),
+      gulpIf(isDEV, sourcemaps.init()),
       sass({
         outputStyle: isDEV ? "expanded" : "compressed",
-      }).on("error", sass.logError)
-    )
-    .pipe(rename({ extname: ".wxss" }))
-    .pipe(dest(outputPath));
+      }).on("error", sass.logError),
+      rename({ extname: ".wxss" }),
+      gulpIf(isDEV, sourcemaps.write(".")),
+      dest(outputPath),
+    ],
+    cb
+  );
 };<% } %><% if (CSS == 'Less') { %>
 const parseLess = (cb) => {
   pump(
@@ -120,8 +126,8 @@ const parseLess = (cb) => {
       less({
         compress: isPROD,
       }),
-      gulpIf(isDEV, sourcemaps.write(".")),
       rename({ extname: ".wxss" }),
+      gulpIf(isDEV, sourcemaps.write(".")),
       dest(outputPath),
     ],
     cb

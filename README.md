@@ -28,7 +28,7 @@
 
 > TODO
 
-1. 完成模版，添加 css 模板
+1. ~~完成模版，添加 css 模板~~
 2. ~~配置 husky+prettier~~
 3. ~~添加 commitizen~~
 4. ~~添加图片，字体 gulp 处理~~

@@ -15,6 +15,8 @@ const cleanCSS = require("gulp-clean-css");
 const sass = require("gulp-sass");
 const less = require("gulp-less");
 
+sass.compiler = require("node-sass");
+
 const since = (task) => (file) =>
   lastRun(task) > file.stat.ctime ? lastRun(task) : 0;
 
@@ -108,15 +110,20 @@ const parseCss = () => {
     .pipe(dest(outputPath));
 };
 
-const parseSass = () => {
-  return src(fileInputPath.sass, { since: since(parseSass) })
-    .pipe(
+const parseSass = (cb) => {
+  pump(
+    [
+      src(fileInputPath.sass, { since: since(parseSass) }),
+      gulpIf(isDEV, sourcemaps.init()),
       sass({
         outputStyle: isDEV ? "expanded" : "compressed",
-      }).on("error", sass.logError)
-    )
-    .pipe(rename({ extname: ".wxss" }))
-    .pipe(dest(outputPath));
+      }).on("error", sass.logError),
+      rename({ extname: ".wxss" }),
+      gulpIf(isDEV, sourcemaps.write(".")),
+      dest(outputPath),
+    ],
+    cb
+  );
 };
 
 const parseLess = (cb) => {
@@ -127,8 +134,8 @@ const parseLess = (cb) => {
       less({
         compress: isPROD,
       }),
-      gulpIf(isDEV, sourcemaps.write(".")),
       rename({ extname: ".wxss" }),
+      gulpIf(isDEV, sourcemaps.write(".")),
       dest(outputPath),
     ],
     cb
@@ -192,6 +199,10 @@ const watchFile = () => {
     if (fs.existsSync(distFile)) {
       fs.unlinkSync(distFile);
     }
+    const mapDistFile = distFile + ".map";
+    if (fs.existsSync(mapDistFile)) {
+      fs.unlinkSync(mapDistFile);
+    }
   });
 
   watch(fileInputPath.ts, parseTs);
@@ -211,13 +222,13 @@ const watchFile = () => {
 };
 
 const build = parallel(
-  // parseTs,
-  parseJs,
+  parseTs,
+  // parseJs,
   copyHelpers,
   copyWxml,
-  copyWxss,
+  // copyWxss,
   // parseCss,
-  // parseSass,
+  parseSass,
   // parseLess,
   copyJson,
   copyImages,
