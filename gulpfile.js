@@ -7,7 +7,7 @@ const { src, dest, watch, parallel, lastRun } = require("gulp"),
   sourcemaps = require("gulp-sourcemaps"),
   gulpIf = require("gulp-if"),
   pump = require("pump"),
-  gulpImage = require("gulp-image"),
+  imagemin = require("gulp-imagemin"),
   cache = require("gulp-cache"),
   prettyData = require("gulp-pretty-data"),
   tap = require("gulp-tap"),
@@ -73,13 +73,13 @@ const copyHelpers = () => {
 
 const copyImages = () => {
   return src(fileInputPath.images, { since: since(copyImages) })
-    .pipe(cache(gulpImage()))
-    .pipe(dest(outputPath));
+    .pipe(cache(imagemin()))
+    .pipe(dest(`${outputPath}/images`));
 };
 
 const copyFonts = () => {
   return src(fileInputPath.fonts, { since: since(copyFonts) }).pipe(
-    dest(outputPath)
+    dest(`${outputPath}/fonts`)
   );
 };
 
