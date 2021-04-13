@@ -1,3 +1,5 @@
+@import "../../app.css";
+
 .userinfo {
   display: flex;
   flex-direction: column;

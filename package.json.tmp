@@ -30,9 +30,10 @@
     "gulp-pretty-data": "^0.1.2",
     "gulp-sourcemaps": "^3.0.0",
     "pump": "^3.0.0",
-    "gulp-babel": "^8.0.0",<% if (CSS == 'Wxss'||CSS == 'Css') { %>
-    "gulp-clean-css": "^4.3.0",<% } %>
-    "gulp-rename": "^2.0.0",<% if (CSS == 'Less') { %>
+    "gulp-babel": "^8.0.0",
+    "gulp-rename": "^2.0.0",
+    "gulp-purgecss": "^4.0.3",
+    "gulp-tap": "^2.0.0",<% if (CSS == 'Less') { %>
     "gulp-less": "^4.0.1",<% } %><% if (CSS == 'Sass/Scss') { %>
     "gulp-sass": "^4.1.0",
     "node-sass": "^4.14.1",<% } %><% if (Language == 'Typescript') { %>

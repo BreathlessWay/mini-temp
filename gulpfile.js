@@ -10,9 +10,9 @@ const { src, dest, watch, parallel, lastRun } = require("gulp"),
   gulpImage = require("gulp-image"),
   cache = require("gulp-cache"),
   prettyData = require("gulp-pretty-data"),
-  tap = require("gulp-tap");
+  tap = require("gulp-tap"),
+  purgecss = require("gulp-purgecss");
 
-const cleanCSS = require("gulp-clean-css");
 const sass = require("gulp-sass");
 const less = require("gulp-less");
 
@@ -46,10 +46,6 @@ const fileInputPath = {
   less: "src/**/*.less",
   sass: "src/**/*.+(scss|sass)",
 };
-
-const minifyCss = cleanCSS({
-  format: isDEV ? "beautify" : "keep-breaks",
-});
 
 const parseTs = (cb) => {
   const tsResult = src(fileInputPath.ts, { since: since(parseTs) })
@@ -90,25 +86,49 @@ const copyFonts = () => {
 const copyWxml = () => {
   return src(fileInputPath.wxml, { since: since(copyWxml) })
     .pipe(
-      prettyData({
-        type: isDEV ? "prettify" : "minify",
-        extensions: {
-          wxml: "xml",
-        },
-      })
+      gulpIf(
+        isPROD,
+        prettyData({
+          type: "minify",
+          extensions: {
+            wxml: "xml",
+          },
+        })
+      )
     )
     .pipe(dest(outputPath));
 };
 
 const copyWxss = () => {
   return src(fileInputPath.wxss, { since: since(copyWxss) })
-    .pipe(minifyCss)
+    .pipe(
+      gulpIf(
+        isPROD,
+        purgecss({
+          content: [fileInputPath.wxml],
+        })
+      )
+    )
     .pipe(dest(outputPath));
 };
 
 const parseCss = () => {
   return src(fileInputPath.css, { since: since(parseCss) })
-    .pipe(minifyCss)
+    .pipe(
+      gulpIf(
+        isPROD,
+        purgecss({
+          content: [fileInputPath.wxml],
+        })
+      )
+    )
+    .pipe(
+      tap((file) => {
+        const content = file.contents.toString();
+        const str = content.replace(/\.css/g, ".wxss");
+        file.contents = Buffer.from(str, "utf8");
+      })
+    )
     .pipe(rename({ extname: ".wxss" }))
     .pipe(dest(outputPath));
 };
@@ -118,9 +138,38 @@ const parseSass = (cb) => {
     [
       src(fileInputPath.sass, { since: since(parseSass) }),
       gulpIf(isDEV, sourcemaps.init()),
-      sass({
-        outputStyle: isDEV ? "expanded" : "compressed",
-      }).on("error", sass.logError),
+      tap((file) => {
+        const content = file.contents.toString(); // 将文件内容toString()
+        const regNotes = /\/\*(\s|.)*?\*\//g; // 匹配 /* */ 注释
+        const removeComment = content.replace(regNotes, ""); // 删除注释内容
+        const reg = /@import\s+['|"](.+)['|"];/g; // 匹配 @import ** 路径引入
+
+        const str = removeComment.replace(reg, ($1, $2) => {
+          const hasFilter = cssFilterFiles.filter(
+            (item) => $2.indexOf(item) > -1
+          ); // 过滤掉变量文件引入
+          return hasFilter <= 0 ? `/** Sass: ${$1} **/` : $1; // 将纯样式文件的引入 添加注释 /** Sass: ${$1} **/
+        });
+        file.contents = Buffer.from(str, "utf8"); // string恢复成文件流
+      }),
+      sass().on("error", sass.logError),
+      gulpIf(
+        isPROD,
+        purgecss({
+          content: [fileInputPath.wxml],
+        })
+      ),
+      tap((file) => {
+        const content = file.contents.toString();
+        const regNotes = /\/\*\* Sass: @import\s+['|"](.+)['|"]; \*\*\//g;
+        const reg = /@import\s+['|"](.+)['|"];/g;
+        const str = content.replace(regNotes, ($1, $2) => {
+          let less = "";
+          $1.replace(reg, ($3) => (less = $3));
+          return less.replace(/\.(sass|scss)/g, ".wxss");
+        });
+        file.contents = Buffer.from(str, "utf8");
+      }),
       rename({ extname: ".wxss" }),
       gulpIf(isDEV, sourcemaps.write(".")),
       dest(outputPath),
@@ -144,14 +193,17 @@ const parseLess = (cb) => {
           const hasFilter = cssFilterFiles.filter(
             (item) => $2.indexOf(item) > -1
           ); // 过滤掉变量文件引入
-          let path = hasFilter <= 0 ? `/** less: ${$1} **/` : $1; // 将纯样式文件的引入 添加注释 /** less: ${$1} **/
-          return path;
+          return hasFilter <= 0 ? `/** less: ${$1} **/` : $1; // 将纯样式文件的引入 添加注释 /** less: ${$1} **/
         });
         file.contents = Buffer.from(str, "utf8"); // string恢复成文件流
       }),
-      less({
-        compress: isPROD,
-      }),
+      less(),
+      gulpIf(
+        isPROD,
+        purgecss({
+          content: [fileInputPath.wxml],
+        })
+      ),
       tap((file) => {
         const content = file.contents.toString();
         const regNotes = /\/\*\* less: @import\s+['|"](.+)['|"]; \*\*\//g;
@@ -256,9 +308,9 @@ const build = parallel(
   copyHelpers,
   copyWxml,
   // copyWxss,
-  // parseCss,
+  parseCss,
   // parseSass,
-  parseLess,
+  // parseLess,
   copyJson,
   copyImages,
   copyFonts,
