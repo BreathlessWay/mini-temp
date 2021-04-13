@@ -3,7 +3,7 @@
   "packOptions": {
     "ignore": []
   },
-  "miniprogramRoot": "dist/",
+  "miniprogramRoot": "",
   "setting": {
     "urlCheck": true,
     "es6": false,
@@ -46,7 +46,7 @@
   },
   "compileType": "miniprogram",
   "libVersion": "2.13.1",
-  "appid": "",
+  "appid": "wx0b780b1f63098de1",
   "projectname": "mini-temp",
   "debugOptions": {
     "hidedInDevtools": []

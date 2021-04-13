@@ -26,6 +26,8 @@
 
 - 在 ci/config.ts 文件中添加命令行工具路径 cliPath
 
+> js 以及 css 的压缩依赖微信开发者工具的上传时压缩混淆，无需使用 gulp 处理
+
 > TODO
 
 1. ~~完成模版，添加 css 模板~~
@@ -36,7 +38,7 @@
 6. ~~尝试 [gulp-purgecss](https://purgecss.com/plugins/gulp.html#installation)~~
 7. ~~使用 gulp-pretty-data 压缩 wxml 和 json~~
 8. 添加 wxs 处理操作
-9. project.config.json 内置
+9. ~~project.config.json 内置~~
 10. 参考优化
 
 - ~~https://segmentfault.com/a/1190000019346399~~

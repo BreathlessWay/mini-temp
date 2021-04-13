@@ -1,9 +1,9 @@
 const shelljs = require("shelljs"),
   path = require("path"),
-  config = require("./config")
+  config = require("./config");
 
 if (config.cliPath) {
-  const pwd = path.resolve();
+  const pwd = process.cwd();
 
   const cmd = `${config.cliPath} build-npm --project ${pwd}`;
 

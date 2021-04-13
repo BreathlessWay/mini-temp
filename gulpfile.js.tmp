@@ -35,7 +35,8 @@ const fileInputPath = {
   wxml: "src/**/*.wxml",
   config: "src/**/*.json",
   images: "src/images/**/*",
-  fonts: "src/fonts/**/*",<% if (Language == 'Typescript') { %>
+  fonts: "src/fonts/**/*",
+  projectConfig: "./project.config.json",<% if (Language == 'Typescript') { %>
   ts: ["src/**/*.ts", "!src/config/*.ts"],<% } %><% if (Language == 'Javascript') { %>
   js: ["src/**/*.js", "!src/helpers/*.js", "!src/config/*.js"],<% } %><% if (CSS == 'Wxss') { %>
   wxss: "src/**/*.wxss",<% } %><% if (CSS == 'Css') { %>
@@ -229,7 +230,7 @@ const parseLess = (cb) => {
 };<% } %>
 
 const copyJson = () => {
-  return src(fileInputPath.config, { since: since(copyJson) })
+  return src([fileInputPath.config, fileInputPath.projectConfig], { since: since(copyJson) })
     .pipe(
       gulpIf(
         isPROD,

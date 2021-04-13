@@ -38,6 +38,7 @@ const fileInputPath = {
   config: "src/**/*.json",
   images: "src/images/**/*",
   fonts: "src/fonts/**/*",
+  projectConfig: "./project.config.json",
 
   ts: ["src/**/*.ts", "!src/config/*.ts"],
   js: ["src/**/*.js", "!src/helpers/*.js", "!src/config/*.js"],
@@ -236,7 +237,9 @@ const parseLess = (cb) => {
 };
 
 const copyJson = () => {
-  return src(fileInputPath.config, { since: since(copyJson) })
+  return src([fileInputPath.config, fileInputPath.projectConfig], {
+    since: since(copyJson),
+  })
     .pipe(
       gulpIf(
         isPROD,
