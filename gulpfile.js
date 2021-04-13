@@ -226,12 +226,15 @@ const parseLess = (cb) => {
 const copyJson = () => {
   return src(fileInputPath.config, { since: since(copyJson) })
     .pipe(
-      prettyData({
-        type: isDEV ? "prettify" : "minify",
-        extensions: {
-          json: "json",
-        },
-      })
+      gulpIf(
+        isPROD,
+        prettyData({
+          type: "minify",
+          extensions: {
+            json: "json",
+          },
+        })
+      )
     )
     .pipe(dest(outputPath));
 };

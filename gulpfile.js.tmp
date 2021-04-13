@@ -219,12 +219,15 @@ const parseLess = (cb) => {
 const copyJson = () => {
   return src(fileInputPath.config, { since: since(copyJson) })
     .pipe(
-      prettyData({
-        type: isDEV ? "prettify" : "minify",
-        extensions: {
-          json: "json",
-        },
-      })
+      gulpIf(
+        isPROD,
+        prettyData({
+          type: "minify",
+          extensions: {
+            json: "json",
+          },
+        })
+      )
     )
     .pipe(dest(outputPath));
 };
@@ -290,7 +293,7 @@ const watchFile = () => {
   watch(fileInputPath.less, parseLess);<% } %>
 };
 
-const build = series(<% if (Language == 'Typescript') { %>
+const build = parallel(<% if (Language == 'Typescript') { %>
   parseTs,<% } %><% if (Language == 'Javascript') { %>
   parseJs,<% } %>
   copyHelpers,

@@ -46,7 +46,7 @@
   },
   "compileType": "miniprogram",
   "libVersion": "2.13.1",
-  "appid": "wx0b780b1f63098de1",
+  "appid": "",
   "projectname": "mini-temp",
   "debugOptions": {
     "hidedInDevtools": []
