@@ -1,14 +1,8 @@
 <!--index.wxml-->
-<wxs module="tool">
-  var includeIt = function(arr, item) {
-    if (!arr) return false;
-    return arr.indexOf(item) > -1;
-  }
-  module.exports.includeIt = includeIt;
-</wxs>
+<wxs src="./index.wxs" module="tool"></wxs>
 <view class="container">
   <view class="userinfo">
-
+    <text>{{tool([1,2], 2)?'有':'无'}}</text>
   </view>
   <view class="usermotto">
     <text class="user-motto">{{motto}}</text>

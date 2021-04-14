@@ -12,7 +12,8 @@ const { src, dest, watch, parallel, lastRun } = require("gulp"),
   cache = require("gulp-cache"),
   prettyData = require("gulp-pretty-data"),
   tap = require("gulp-tap"),
-  purgecss = require("gulp-purgecss");
+  purgecss = require("gulp-purgecss"),
+  uglify = require("gulp-uglify");
 
 const sass = require("gulp-sass");
 const less = require("gulp-less");
@@ -39,6 +40,7 @@ const fileInputPath = {
   images: "src/images/**/*",
   fonts: "src/fonts/**/*",
   projectConfig: "./project.config.json",
+  wxs: "src/**/*.wxs",
 
   ts: ["src/**/*.ts", "!src/config/*.ts"],
   js: ["src/**/*.js", "!src/helpers/*.js", "!src/config/*.js"],
@@ -65,6 +67,25 @@ const parseJs = (cb) => {
     .pipe(gulpIf(isDEV, sourcemaps.init()))
     .pipe(babel());
   pump([jsResult, gulpIf(isDEV, sourcemaps.write(".")), dest(outputPath)], cb);
+};
+
+const parseWxs = () => {
+  return src(fileInputPath.wxs, { since: since(parseWxs) })
+    .pipe(babel())
+    .pipe(
+      gulpIf(
+        isPROD,
+        uglify({
+          //丑化js代码，相当加密
+          compress: {
+            drop_console: true,
+            drop_debugger: true,
+          },
+        })
+      )
+    )
+    .pipe(rename({ extname: ".wxs" }))
+    .pipe(dest(outputPath));
 };
 
 const copyHelpers = () => {
@@ -311,6 +332,7 @@ const watchFile = () => {
   watch(fileInputPath.wxml, copyWxml);
   watch(fileInputPath.images, copyImages);
   watch(fileInputPath.fonts, copyFonts);
+  watch(fileInputPath.wxs, parseWxs);
 
   watch(fileInputPath.wxss, copyWxss);
   watch(fileInputPath.css, parseCss);
@@ -325,6 +347,7 @@ const build = parallel(
   // parseJs,
   copyHelpers,
   copyWxml,
+  parseWxs,
   // copyWxss,
   parseCss,
   // parseSass,

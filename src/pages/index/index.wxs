@@ -1,0 +1,9 @@
+module.exports = function (arr, item) {
+  const m = () => {
+    return Math.E;
+  };
+  const a = 1;
+  console.log(m());
+  if (!arr) return false;
+  return arr.indexOf(item) > -1;
+};

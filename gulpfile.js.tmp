@@ -12,7 +12,8 @@ const { src, dest, watch, parallel, lastRun } = require("gulp"),
   cache = require("gulp-cache"),
   prettyData = require("gulp-pretty-data"),
   tap = require("gulp-tap"),
-  purgecss = require("gulp-purgecss");
+  purgecss = require("gulp-purgecss"),
+  uglify = require("gulp-uglify");
 <% if (CSS == 'Sass/Scss') { %>
 const sass = require("gulp-sass");
 sass.compiler = require("node-sass");
@@ -36,7 +37,8 @@ const fileInputPath = {
   config: "src/**/*.json",
   images: "src/images/**/*",
   fonts: "src/fonts/**/*",
-  projectConfig: "./project.config.json",<% if (Language == 'Typescript') { %>
+  projectConfig: "./project.config.json",
+  wxs: "src/**/*.wxs",<% if (Language == 'Typescript') { %>
   ts: ["src/**/*.ts", "!src/config/*.ts"],<% } %><% if (Language == 'Javascript') { %>
   js: ["src/**/*.js", "!src/helpers/*.js", "!src/config/*.js"],<% } %><% if (CSS == 'Wxss') { %>
   wxss: "src/**/*.wxss",<% } %><% if (CSS == 'Css') { %>
@@ -62,6 +64,25 @@ const parseJs = (cb) => {
     .pipe(babel());
   pump([jsResult, gulpIf(isDEV, sourcemaps.write(".")), dest(outputPath)], cb);
 };<% } %>
+
+const parseWxs = () => {
+  return src(fileInputPath.wxs, { since: since(parseWxs) })
+    .pipe(babel())
+    .pipe(
+      gulpIf(
+        isPROD,
+        uglify({
+          //丑化js代码，相当加密
+          compress: {
+            drop_console: true,
+            drop_debugger: true,
+          },
+        })
+      )
+    )
+    .pipe(rename({ extname: ".wxs" }))
+    .pipe(dest(outputPath));
+};
 
 const copyHelpers = () => {
   return src(fileInputPath.helpers, { since: since(copyHelpers) }).pipe(
@@ -299,6 +320,7 @@ const watchFile = () => {
   watch(fileInputPath.config, copyJson);
   watch(fileInputPath.images, copyImages);
   watch(fileInputPath.fonts, copyFonts);
+  watch(fileInputPath.wxs, parseWxs);
   <% if (CSS == 'Wxss') { %>
   watch(fileInputPath.wxss, copyWxss);<% } %><% if (CSS == 'Css') { %>
   watch(fileInputPath.css, parseCss);<% } %><% if (CSS == 'Sass/Scss') { %>
@@ -314,6 +336,7 @@ const build = parallel(<% if (Language == 'Typescript') { %>
   copyJson,
   copyImages,
   copyFonts,
+  parseWxs,
   generatorEnvConfig,<% if (CSS == 'Wxss') { %>
   copyWxss,<% } %><% if (CSS == 'Css') { %>
   parseCss,<% } %><% if (CSS == 'Sass/Scss') { %>
