@@ -29,7 +29,7 @@
     "@babel/plugin-proposal-optional-chaining": "^7.12.0",
     "@babel/plugin-transform-typescript": "^7.13.0",
     "@babel/preset-env": "^7.11.5",
-    "@breathlessway/babel-plugin-external-helpers-mini": "^1.0.0",
+    "@breathlessway/babel-plugin-external-helpers-mini": "^1.0.1",
     "@commitlint/cli": "^11.0.0",
     "@commitlint/config-conventional": "^11.0.0",
     "babel-plugin-module-resolver": "^4.0.0",

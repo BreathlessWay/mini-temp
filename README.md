@@ -28,6 +28,16 @@
 
 > js 以及 css 的压缩依赖微信开发者工具的上传时压缩混淆，无需使用 gulp 处理
 
+### 关于 @breathlessway/babel-plugin-external-helpers-mini
+
+```
+ 若修改 @breathlessway/babel-plugin-external-helpers-mini 的 prefix 属性
+ 同时也要修改 helpers.js 中的入参
+ ......
+ })(typeof global === "undefined" ? self : global); // 当为global时
+ })(typeof window === "undefined" ? self : window); // 当为window时
+```
+
 > TODO
 
 1. ~~完成模版，添加 css 模板~~
