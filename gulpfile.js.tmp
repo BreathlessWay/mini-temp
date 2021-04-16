@@ -10,8 +10,8 @@ const { src, dest, watch, parallel, lastRun } = require("gulp"),
   imagemin = require("gulp-imagemin"),
   pngquant = require("imagemin-pngquant"),
   cache = require("gulp-cache"),
-  prettyData = require("gulp-pretty-data"),
-  tap = require("gulp-tap"),
+  prettyData = require("gulp-pretty-data"),<% if (CSS != 'Wxss') { %>
+  tap = require("gulp-tap"),<% } %>
   purgecss = require("gulp-purgecss"),
   uglify = require("gulp-uglify");
 <% if (CSS == 'Sass/Scss') { %>
